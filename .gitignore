@@ -1,0 +1,66 @@
+.idea/*
+.DS_Store
+.aws/credentials
+.aws/config
+**/.DS_Store
+**/*.pyc
+.sass-cache
+**/*.key
+**/*.crt
+node_modules
+**/yarn-error.log
+
+**/v8-compile-cache*
+Thumbs.db
+*.retry
+*.vagrant
+api/static/**
+.vscode/*
+.ssh/known_hosts
+.ssh/id_rsa
+.mypy_cache
+hidden
+venv/
+dist/
+
+# coverage.py files
+htmlcov
+.coverage
+.coverage.*
+coverage.xml
+
+# Python cache
+*.pyc
+*.pyo
+__pycache__
+
+# Chrome credentials
+scripts/aws/chrome
+
+# Ansible vault credentials
+.vault_pass
+
+# debugger cache
+.cache/
+
+# lambda zips
+lambdas/*/*.zip
+
+# Ignore Excel temporary files
+~$*.xls*
+
+# Ignore docker compose environment files
+.env
+
+# Ignore local dynamoDB files
+**/my-dynamodb-data/**
+
+# ignore Panther Upload local artifacts
+**/panther-analysis-*.zip
+
+# Allow some specific files for local cacheing
+!**/dev-tools/panther-testing**
+
+# ignore Panther CLI Binaries
+**/pantherlog
+**/*pantherlog.zip

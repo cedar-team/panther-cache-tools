@@ -1,0 +1,13 @@
+{
+    "TableName": "panther-kv-store",
+    "KeySchema": [
+      { "AttributeName": "key", "KeyType": "HASH" }
+    ],
+    "AttributeDefinitions": [
+        { "AttributeName": "key", "AttributeType": "S" }
+    ],
+    "ProvisionedThroughput": {
+      "ReadCapacityUnits": 10,
+      "WriteCapacityUnits": 10
+    }
+}

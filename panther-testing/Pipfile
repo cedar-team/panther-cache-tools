@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "Panther Testing"
+
+[packages]
+panther-analysis-tool = {version="*"}
+policyuniverse = {version="*"}
+boto3 = {version="*"}
+black = {version="*"}
+isort = {version="*"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
+
+[scripts]
+install-pantherlog = 'bash -c "curl -sSO https://panther-community-us-east-1.s3.amazonaws.com/v1.27.0/tools/darwin-amd64-pantherlog.zip && unzip darwin-amd64-pantherlog && chmod +x pantherlog"'
+cache-dump = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-dump"' 
+cache-list-tables = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-list-tables"' 
+cache-start = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-start"' 
+cache-stop = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-stop"' 
+cache-status ='bash -c "cd ../local-cache && ./cache-functions.sh cache-status"' 
+cache-update-key = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-update-key"'
+cache-delete-key = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-delete-key"'
+cache-add-key = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-add-key"'
+cache-load = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-load"'
+cache-populate-tests = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-populate-tests"'
+cache-clear-tests = 'bash -c "cd ../local-cache && ./cache-functions.sh cache-clear-tests"'
