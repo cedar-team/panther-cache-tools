@@ -1,0 +1,7 @@
+# Panther Analysis Tool
+panther_analysis_tool
+
+# Panther Run-Time Requirements https://docs.runpanther.io/system-configuration/run-time
+jsonpath-ng==1.5.2
+policyuniverse==1.5.0.20220613
+requests==2.23.0
