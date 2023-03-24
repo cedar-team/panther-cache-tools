@@ -1,0 +1,119 @@
+name: Panther Upload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  panther_upload_rules_saas:
+    runs-on: ubuntu-20.04
+    env:
+      LOCAL_DYNAMO_URL: http://localhost:8000
+      AWS_ACCESS_KEY_ID: Iamafakecred
+      AWS_SECRET_ACCESS_KEY: Iamalsoafakecred
+      AWS_DEFAULT_REGION: us-east-1
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #pin to latest release: v2.3.4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' 
+      - name: Install Panther_Analysis_Tool & Panther Dependencies
+        run: pip3 install -r panther/requirements.txt
+      - name: Setup Local Cache
+        run: sudo docker run --name local.dynamodb -d -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -port 8000
+      - name: Create panther-kv-store table
+        run: aws dynamodb create-table --cli-input-json file://dev-tools/local-cache/initial-load.json --endpoint-url http://localhost:8000
+      - name: Load Cache Tests (install deps, import yml, load cache)
+        run: |
+            sudo snap install yq
+            sudo apt-get install -y jq
+            touch tmp.txt
+            for file in  panther/cedar_rules/*/*.yml; do
+                yq '.Tests[0].Log.cache_load' $file | jq . | sed "s/<< DATETIME_NOW >>/$(date '+%Y-%m-%d %H:%M:%S.000')/g" > tmp.txt
+                if ! [[ $(cat tmp.txt) = null ]]; then
+                    aws dynamodb batch-write-item --request-items file://tmp.txt --endpoint-url $LOCAL_DYNAMO_URL >> /dev/null
+                    echo "Loaded Cache from $file" 
+                fi
+            done
+            rm tmp.txt
+      - name: Upload Queries
+        run: |
+          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
+          panther_analysis_tool upload --path ./panther/cedar_queries/
+      - name: Upload Custom Rules, Policies & Global Helpers
+        run: |
+          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
+          panther_analysis_tool upload --path ./panther/cedar_rules/
+      - name: Upload Lookups
+        run: |
+          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
+          panther_analysis_tool upload --path ./panther/cedar_lookups/
+      # Notify Slack on errors
+      - name: Alert slack channel on failures
+        if: ${{ failure() }}
+        id: failure_slack_channel
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          channel-id: security-system-alerts
+          payload: |
+                {
+                  "text": "GitHub Action *Panther Upload - Rules* has failed",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action *Panther Upload - Rules* has failed. See the run <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>."
+                      }
+                    }
+                  ]
+                }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SECURITY_BOT_SLACK_TOKEN }}
+      
+
+      
+  panther_upload_schemas_saas:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #pin to latest release: v2.3.4
+      - name: Install Panther_Analysis_Tool & Panther Dependencies
+        run: pip3 install -r panther/requirements.txt
+      - name: Upload Schemas
+        run: |
+          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
+          panther_analysis_tool update-custom-schemas --path ./panther/cedar_schemas/
+      # Notify Slack on errors
+      - name: Alert slack channel on failures
+        if: ${{ failure() }}
+        id: failure_slack_channel
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          channel-id: security-system-alerts
+          payload: |
+                {
+                  "text": "GitHub Action *Panther Upload - Schemas* has failed",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action *Panther Upload - Schemas* has failed. See the run <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>."
+                      }
+                    }
+                  ]
+                }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SECURITY_BOT_SLACK_TOKEN }}
