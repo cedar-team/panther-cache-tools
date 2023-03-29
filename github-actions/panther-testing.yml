@@ -3,7 +3,7 @@ name: Panther Testing
 on:
   pull_request:
     paths:
-      - 'panther/**/'
+      - 'PATH/TO/PANTHER/FILES/IN/REPO'
 
 jobs:
   panther_test:
@@ -14,22 +14,22 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #pin to latest release: v2.3.4
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #pinned to latest release: v2.3.4
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9' 
       - name: Install Panther_Analysis_Tool & Panther Dependencies
-        run: pip3 install -r panther/requirements.txt
+        run: pip3 install -r github-actions/requirements.txt
       - name: Setup Local Cache
         run: sudo docker run --name local.dynamodb -d -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -port 8000
       - name: Create panther-kv-store table
-        run: aws dynamodb create-table --cli-input-json file://dev-tools/local-cache/initial-load.json --endpoint-url http://localhost:8000
+        run: aws dynamodb create-table --cli-input-json file://local-cache/initial-load.json --endpoint-url http://localhost:8000
       - name: Load Cache Tests (install deps, import yml, load cache)
         run: |
             sudo snap install yq
             sudo apt-get install -y jq
             touch tmp.txt
-            for file in  panther/cedar_rules/*/*.yml; do
+            for file in PATH_TO_RULES_DIRECTORY/*/*.yml; do
                 yq '.Tests[0].Log.cache_load' $file | jq . | sed "s/<< DATETIME_NOW >>/$(date '+%Y-%m-%d %H:%M:%S.000')/g" > tmp.txt
                 if ! [[ $(cat tmp.txt) = null ]]; then
                     aws dynamodb batch-write-item --request-items file://tmp.txt --endpoint-url $LOCAL_DYNAMO_URL >> /dev/null
@@ -38,10 +38,10 @@ jobs:
             done
             rm tmp.txt
       - name: Panther Analysis Tool Test (Rules)
-        run: panther_analysis_tool test --path ./panther/cedar_rules/ --filter Enabled=true
+        run: panther_analysis_tool test --path ./PATH_TO_RULES_DIRECTORY/ --filter Enabled=true
       - name: Panther Analysis Tool Test (Lookups)
         run: |
-          for file in ./panther/cedar_lookups/*/*.yml
+          for file in ./PATH_TO_LOOKUP_TABLES/*/*.yml
           do
             echo "Starting >> $file"
             panther_analysis_tool test-lookup-table --path "$file"
@@ -53,7 +53,7 @@ jobs:
           curl -sSO "https://panther-community-us-east-1.s3.amazonaws.com/$VERSION/tools/linux-amd64-pantherlog.zip" && unzip linux-amd64-pantherlog && chmod +x pantherlog
       - name: Schema Tests
         run: |
-          find ./panther/cedar_schemas/ -maxdepth 1 -mindepth 1 -type d | while read dir; do
+          find ./PATH_TO_SCHEMAS_DIRECTORY/ -maxdepth 1 -mindepth 1 -type d | while read dir; do
             if [[ "$dir" = *"lookup"* ]]; then
               echo "Skipping Lookup Schema >> $dir"
             else

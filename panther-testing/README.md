@@ -1,11 +1,11 @@
 ## Panther Testing Tools
-These scripts expand on the default Panther Testing Suite to allow for local cacheing and a simpler test onboarding experiance. 
+These scripts expand on the default Panther Testing Suite to allow for local cacheing and a more simple testing experiance. 
 
 For details on local cacheing setup and configuration, see ../local-cache/README.md
 
-To use this
-1. Ensure that `python3` is installed (See engineering onboarding)
-2. Navigate to `dev-tools/panther-testing` (i.e. this directory)
+To use the local cache
+1. Ensure that `python3` is installed
+2. Navigate to `panther-testing`
 3. Run `chmod +x setup.sh && ./setup.sh`
 4. `pipenv run <command>`
 
