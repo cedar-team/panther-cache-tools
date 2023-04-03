@@ -1,4 +1,4 @@
-## Local Cacheing & GitHub Actions
+## Local Caching & GitHub Actions
 ### GitHub Actions
 - These GitHub actions are quite straight forward and accomplish the following:
 1. Interact with Panther (test or upload)
