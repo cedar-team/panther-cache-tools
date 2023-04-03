@@ -43,19 +43,19 @@ jobs:
             rm tmp.txt
       - name: Upload Queries
         run: |
-          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_HOST=https://api.<DOMAIN>.runpanther.net/public/graphql
           export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
-          panther_analysis_tool upload --path ./panther/cedar_queries/
+          panther_analysis_tool upload --path <PATH_TO_QUERIES>
       - name: Upload Custom Rules, Policies & Global Helpers
         run: |
-          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_HOST=https://api.<DOMAIN.runpanther.net/public/graphql
           export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
-          panther_analysis_tool upload --path ./panther/cedar_rules/
+          panther_analysis_tool upload --path <PATH_TO_RULES
       - name: Upload Lookups
         run: |
-          export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
+          export PANTHER_API_HOST=https://api.<DOMAIN.runpanther.net/public/graphql
           export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
-          panther_analysis_tool upload --path ./panther/cedar_lookups/
+          panther_analysis_tool upload --path <PATH_TO_LOOKUPS>
       # Notify Slack on errors
       - name: Alert slack channel on failures
         if: ${{ failure() }}
@@ -77,7 +77,7 @@ jobs:
                   ]
                 }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SECURITY_BOT_SLACK_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       
 
       
@@ -94,7 +94,7 @@ jobs:
         run: |
           export PANTHER_API_HOST=https://api.cedar.runpanther.net/public/graphql
           export PANTHER_API_TOKEN=${{ secrets.PANTHER_TOKEN }}
-          panther_analysis_tool update-custom-schemas --path ./panther/cedar_schemas/
+          panther_analysis_tool update-custom-schemas --path <PATH_TO_SCHEMAS>
       # Notify Slack on errors
       - name: Alert slack channel on failures
         if: ${{ failure() }}
@@ -116,4 +116,4 @@ jobs:
                   ]
                 }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SECURITY_BOT_SLACK_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

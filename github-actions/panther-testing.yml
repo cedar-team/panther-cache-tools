@@ -3,7 +3,7 @@ name: Panther Testing
 on:
   pull_request:
     paths:
-      - 'PATH/TO/PANTHER/FILES/IN/REPO'
+      - '<PATH_TO_PANTHER_FILES_IN_REPO>'
 
 jobs:
   panther_test:
@@ -29,7 +29,7 @@ jobs:
             sudo snap install yq
             sudo apt-get install -y jq
             touch tmp.txt
-            for file in PATH_TO_RULES_DIRECTORY/*/*.yml; do
+            for file in <PATH_TO_RULES_DIRECTORY>/*.yml; do
                 yq '.Tests[0].Log.cache_load' $file | jq . | sed "s/<< DATETIME_NOW >>/$(date '+%Y-%m-%d %H:%M:%S.000')/g" > tmp.txt
                 if ! [[ $(cat tmp.txt) = null ]]; then
                     aws dynamodb batch-write-item --request-items file://tmp.txt --endpoint-url $LOCAL_DYNAMO_URL >> /dev/null
@@ -41,7 +41,7 @@ jobs:
         run: panther_analysis_tool test --path ./PATH_TO_RULES_DIRECTORY/ --filter Enabled=true
       - name: Panther Analysis Tool Test (Lookups)
         run: |
-          for file in ./PATH_TO_LOOKUP_TABLES/*/*.yml
+          for file in <PATH_TO_LOOKUP_TABLES>/*.yml
           do
             echo "Starting >> $file"
             panther_analysis_tool test-lookup-table --path "$file"
@@ -53,7 +53,7 @@ jobs:
           curl -sSO "https://panther-community-us-east-1.s3.amazonaws.com/$VERSION/tools/linux-amd64-pantherlog.zip" && unzip linux-amd64-pantherlog && chmod +x pantherlog
       - name: Schema Tests
         run: |
-          find ./PATH_TO_SCHEMAS_DIRECTORY/ -maxdepth 1 -mindepth 1 -type d | while read dir; do
+          find <PATH_TO_SCHEMAS_DIRECTORY> -maxdepth 1 -mindepth 1 -type d | while read dir; do
             if [[ "$dir" = *"lookup"* ]]; then
               echo "Skipping Lookup Schema >> $dir"
             else

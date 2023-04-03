@@ -1,13 +1,12 @@
 ## Panther Testing Tools
-These scripts expand on the default Panther Testing Suite to allow for local cacheing and a more simple testing experiance. 
+These scripts expand on the default Panther Testing Suite to allow for local caching and a more streamlined testing experiance. 
 
-For details on local cacheing setup and configuration, see ../local-cache/README.md
+For details on local caching specific setup and configuration, see ../local-cache/README.md
 
 To use the local cache
-1. Ensure that `python3` is installed
-2. Navigate to `panther-testing`
-3. Run `chmod +x setup.sh && ./setup.sh`
-4. `pipenv run <command>`
+1. Ensure `python3` is installed
+2. Run `chmod +x setup.sh && ./setup.sh`
+3. `pipenv run <command>`
 
 ### Supported commands
 - `cache-status` - if the local cache is running or not

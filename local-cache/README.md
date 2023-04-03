@@ -1,4 +1,4 @@
-## Local Cacheing
+## Local Caching
 - The local cache uses the official aws dynnamodb docker image
 - By default the cache is available at `localhost:8000`
 - The `panther_oss_helper` function should automatically use the local cache when running locally
