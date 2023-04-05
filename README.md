@@ -45,6 +45,6 @@ For a list of all cache commands, see `panther-testing/README.md`
 ## The details
 Other README's in the repo have the details! See the links below: 
 - [Local Cache Implementation Details](https://github.com/cedar-team/panther-cache-tools/tree/main/local-cache#readme)
-- [Panther Helper Updates required for Local Cache](https://github.com/cedar-team/panther-cache-tools/tree/main/panther_helper_updates#readme)
+- [Panther Helper Updates required for Local Cache](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-helper-updates#readme)
 - [Local Cache and Panther Test CLI](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-testing#readme)
 - [GitHub Action Local Cache Implementation Examples](https://github.com/cedar-team/panther-cache-tools/tree/main/github-actions#readme)
