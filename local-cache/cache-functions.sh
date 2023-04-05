@@ -9,8 +9,10 @@ elif [ $1 = "cache-list-tables" ]; then
 
 # cache-start
 elif [ $1 = "cache-start" ]; then
+    # Comment out the following 2 lines to prevent the auto-credential management feature for the cache
     mv ~/.aws/credentials ~/.aws/credentials.bkup
     touch ~/.aws/credentials && echo -e "[default]\naws_access_key_id = fakeKey\naws_secret_access_key = fakeSecret\naws_region = us-east-1" >> ~/.aws/credentials
+    
     docker-compose up -d dynamodb
     LOCAL_DYNAMO_URL="http://127.0.0.1:8000"
     aws dynamodb create-table --region us-east-1 --endpoint-url $LOCAL_DYNAMO_URL --cli-input-json file://initial-load.json >> /dev/null
