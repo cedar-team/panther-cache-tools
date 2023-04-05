@@ -3,7 +3,7 @@ This repo applies specifically to the [Panther SIEM](https://panther.com/), and 
 
 
 ## Why?
-Why should this matter to me? Well, Panther, as a SIEM, takes a fundamentally different approach to most other SIEM tools. They run detection logic on each log, and each detection is Python. This means that you have a LOT of flexibilty. 
+Why should this matter to me? Well, Panther, as a SIEM, takes a fundamentally different approach to most other SIEM tools. They run detection logic on each log, and each detection is Python. This means that you have a lot of flexibilty in your logic. 
 
 But what if I want to maintain state on my realtime detections? Panther solved this by implementing "[caching](https://docs.panther.com/writing-detections/caching)". Caching is an abstracted [AWS DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) interface that allows you to store and manipulate key/value pairs and dictionaries directly from detection code. For example, in Python :
 
@@ -20,7 +20,7 @@ Dictionaries:
  ```
 Super simple, right? For more examples, see [Panther's Documentation](https://docs.panther.com/detections/caching).
 
-This capability opens up a lot of flexibility. But since the "production" cache is hosted by Panther as part of their SaaS SIEM solution, it's not always easy to view live data or integrate caching into local detection development and testing workflows.
+This capability opens up a lot of options, from dynamic lookup tables to detection chaining. But since the "production" cache is hosted by Panther as part of their SaaS SIEM solution, it's not always easy to view live data or integrate caching into local detection development and testing workflows.
 
 The purpose of the local cache is to provide complete control over an identical version of the production cache used by Panther. This cache helps with testing and development by providing visibility and allowing experimentation without risk. This local cache implementation relies on a small change to Panther default helper functions, AWS's local dynamoDB docker image, and a series of bash scripts. 
 
