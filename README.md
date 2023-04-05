@@ -16,7 +16,7 @@ Counters:
 Dictionaries:
  ```
  put_dictionary(key, data)
- get_data = get_dictionary(key, value)
+ get_data = get_dictionary(key)
  ```
 Super simple, right? For more examples, see [Panther's Documentation](https://docs.panther.com/detections/caching).
 
