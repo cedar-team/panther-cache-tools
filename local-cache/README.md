@@ -10,7 +10,7 @@
 ** Note: When the cache is running, your ~/.aws/credentials file is temporaily backed up and a new file is managed by the cache. When the cache is stopped, the original file is restored
 
 # Pre-populating the cache for testing in CI/CD or high-count detections
-The cache can be prepopulated when needed by defining a test in the detection `yaml` file. The cache data *MUST* be the first test in the yaml file, and should always return `FALSE` for the rule engine. The cache is then loaded locally by running `pipenv run cache-populate-tests`. When done testing, the pre-defined values can be unloaded by running `pipenv run cache-clear-tests`. Example:
+The cache can be prepopulated when needed by defining a test in the detection `yaml` file. The cache data *MUST* be the first test in the yaml file, and should always return `FALSE` for the rule engine. The cache is then loaded locally by running `pipenv run cache-populate-tests`. When done testing, the pre-defined values can be unloaded by running `pipenv run cache-clear-tests`. Since this is processed by a bash script, you can also set dynamic values, such as dates, in the prepoulated cache items if needed. See below for a full example, including a dynamic data. Example:
 
 Tests:
   - 
@@ -27,7 +27,7 @@ Tests:
                           "key": { "S": "my.dynamodb.key" },
                           "expiresAt": { "N": "34534534535.916358" },
                           "stringSet": { "SS": ["a", "b'] },
-                          "dictionary": { "S": "{\"example\":\"dictionary\"}"}
+                          "dictionary": { "S": "{\"date\":\"<< DATETIME_NOW >>\"}"}
                           "intCount": { "N": "5" }
                       }
                   }
