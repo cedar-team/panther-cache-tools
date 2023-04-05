@@ -1,3 +1,4 @@
+
 ## Local Cacheing & GitHub Actions
 ### GitHub Actions
 - These GitHub actions are quite straight forward and accomplish the following:
@@ -9,4 +10,3 @@
 
 ### Panther Upload:
 - This file will run on merged PR's and will upload Panther Schemas, Lookups, Rules, and Queries. Variables that need to be set are defined as `<VARIABLE>`
-
