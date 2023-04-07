@@ -34,13 +34,13 @@ A few quick features the the local cache addresses
 For a basic implementation:
 1. Clone this repo 
 `git clone https://github.com/cedar-team/panther-cache-tools.git`
-2. (Skip if you already have your owne Panther repo) Clone Panther's repo 
+2. (Skip if you already have your own Panther repo) Clone Panther's repo 
 `git clone git@github.com:panther-labs/panther-analysis.git`
-3. Replace default Panther global helper file `global_helpers/panther_oss_helpers.py` (`kv_table` function) with the updated code (see `panther_helper_updates` for the snippet to replace)
+3. Replace default Panther global helper file `global_helpers/panther_oss_helpers.py` (`kv_table` function) with the updated code (see [`panther_helper_updates`](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-helper-updates#readme) for the snippet to replace)
 4. Navigate to `panther-testing` in this repo
 5. Run `. setup.sh`
 6. Cache is ready! Run `pipenv run cache-start`
-For a list of all cache commands, see `panther-testing/README.md`
+For a list of all cache commands, see [`panther-testing/README.md`](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-testing#readme)
 
 ## The details
 Other README's in the repo have the details! See the links below: 
