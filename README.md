@@ -39,7 +39,7 @@ For a basic implementation:
 3. Replace default Panther global helper file `global_helpers/panther_oss_helpers.py` (`kv_table` function) with the updated code (see [`panther_helper_updates`](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-helper-updates#readme) for the snippet to replace)
 4. Navigate to `panther-testing` in this repo
 5. Run `. setup.sh`
-** setup.sh was written for MacOS, assuming [brew](https://brew.sh/) is installed. You will likely need to edit the dependecy install commands proir to running to match your operating system.  
+`** setup.sh was written for MacOS and assuming [brew](https://brew.sh/) is installed. You will likely need to edit the dependency install commands in the setup script prior to running to match your operating system.`  
 6. Cache is ready! Run `pipenv run cache-start`
 For a list of all cache commands, see [`panther-testing/README.md`](https://github.com/cedar-team/panther-cache-tools/tree/main/panther-testing#readme)
 
